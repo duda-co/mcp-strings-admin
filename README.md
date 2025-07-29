@@ -2,6 +2,9 @@
 
 MCP server for Duda strings admin service. Provides AI tools to manage translation strings.
 
+> [!IMPORTANT]  
+> You need to be connected to VPN in order to use the MCP.
+
 ## Installation
 
 ### From Private Registry (Duda Team)
