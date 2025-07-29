@@ -1,7 +1,10 @@
 {
   "name": "@duda-co/mcp-strings-admin",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Model Context Protocol (MCP) server for Duda Strings Admin service - provides tools to manage translation scopes and string keys",
+  "bin": {
+    "@duda-co/mcp-strings-admin": "dist/index.js"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { FastMCP } from 'fastmcp';
 import { getScopesToolDefinition } from './tools/getScopes';
 import { createStringToolDefinition } from './tools/createString';
