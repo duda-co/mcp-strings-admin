@@ -6,7 +6,7 @@ import { KeysScope } from '../types';
 
 export const getScopesToolDefinition = {
   name: 'duda_strings_admin_get_all_scopes',
-  description: 'Retrieves all available scopes so that clients can decide where to add keys',
+  description: 'Retrieves all available scopes where string keys can be created. Use this first to see available scope options, then use the "value" field from the response as "scopeValue" when creating new string keys.',
   parameters: z.object({}),
   execute: async () => {
     const startTime = Date.now();

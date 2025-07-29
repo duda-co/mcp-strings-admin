@@ -6,12 +6,12 @@ import { MCPStringData } from '../types';
 
 export const createStringToolDefinition = {
   name: 'duda_strings_admin_create_new_string_key',
-  description: 'Creates a new string key inside a specified scope',
+  description: 'Creates a new string key inside a specified scope. WORKFLOW: 1) First call duda_strings_admin_get_all_scopes to see available scopes, 2) Choose appropriate scope, 3) Use the scope "value" field as "scopeValue" parameter. KEY FORMAT: Must start with "ui.ed." prefix (e.g., ui.ed.button.save, ui.ed.error.invalid_email). Suffix is developer choice - verify naming with team.',
   parameters: z.object({
-    key: z.string().min(1).max(200),
-    value: z.string().min(1).max(1000),
-    shouldTranslate: z.boolean().default(false),
-    scopeValue: z.string().min(1).max(50)
+    key: z.string().describe('String identifier. MUST start with "ui.ed." prefix. Format: ui.ed.{category}.{specific_name}. Examples: ui.ed.button.save, ui.ed.error.invalid_email'),
+    value: z.string().describe('The actual display text for this string'),
+    shouldTranslate: z.boolean().default(true).describe('Whether this string should be translated to other languages'),
+    scopeValue: z.string().describe('Target scope name. Use the "value" field from duda_strings_admin_get_all_scopes response')
   }),
   execute: async (args: MCPStringData) => {
     const startTime = Date.now();
