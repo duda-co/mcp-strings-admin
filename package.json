@@ -1,17 +1,38 @@
 {
-  "name": "mcp-strings-admin",
+  "name": "@duda-co/mcp-strings-admin",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Model Context Protocol (MCP) server for Duda Strings Admin service - provides tools to manage translation scopes and string keys",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "strings-admin",
+    "translation",
+    "i18n",
+    "duda"
+  ],
+  "author": "Duda",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duda-co/mcp-strings-admin.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm-github-packs.dud4.co"
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "package.json"
+  ],
   "dependencies": {
     "axios": "^1.11.0",
     "fastmcp": "^3.11.0",
