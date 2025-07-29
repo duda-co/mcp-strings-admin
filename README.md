@@ -97,7 +97,6 @@ Add the following configuration to your `claude_desktop_config.json`:
       "command": "node",
       "args": ["/path/to/mcp-strings-admin/dist/index.js"],
       "env": {
-        "STRINGS_ADMIN_HOST": "http://your-java-service:8080",
         "LOG_LEVEL": "info"
       }
     }
