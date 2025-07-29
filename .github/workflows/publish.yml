@@ -1,0 +1,53 @@
+name: Publish Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (leave empty to use current version)'
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run tests
+        run: npm test
+        
+      - name: Build package
+        run: npm run build
+        
+      - name: Bump version if specified
+        if: inputs.version != ''
+        run: npm version ${{ inputs.version }} --no-git-tag-version
+        
+      - name: Configure registry
+        run: |
+          echo "@duda-co:registry=https://npm-github-packs.dud4.co" >> .npmrc
+          echo "//npm-github-packs.dud4.co/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          
+      - name: Publish package
+        run: npm publish
+        
+      - name: Create Git tag
+        if: inputs.version != ''
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          git tag "v$PACKAGE_VERSION"
+          git push origin "v$PACKAGE_VERSION" 
