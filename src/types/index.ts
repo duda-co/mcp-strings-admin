@@ -8,4 +8,15 @@ export interface MCPStringData {
   value: string;
   shouldTranslate: boolean;
   scopeValue: string;
+}
+
+export interface BulkStringKeyValue {
+  key: string;
+  value: string;
+}
+
+export interface MCPBulkStringData {
+  keys: BulkStringKeyValue[];
+  shouldTranslate: boolean;
+  scopeValue: string;
 } 

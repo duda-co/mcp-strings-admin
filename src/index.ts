@@ -3,6 +3,7 @@
 import { FastMCP } from 'fastmcp';
 import { getScopesToolDefinition } from './tools/getScopes';
 import { createStringToolDefinition } from './tools/createString';
+import { createBulkStringsToolDefinition } from './tools/createBulkStrings';
 import { logger } from './utils/logger';
 import { config } from './config';
 
@@ -26,11 +27,13 @@ async function main() {
     // Register tools
     server.addTool(getScopesToolDefinition);
     server.addTool(createStringToolDefinition);
+    server.addTool(createBulkStringsToolDefinition);
 
     logger.info('Tools registered successfully', {
       tools: [
         getScopesToolDefinition.name,
-        createStringToolDefinition.name
+        createStringToolDefinition.name,
+        createBulkStringsToolDefinition.name
       ]
     });
 

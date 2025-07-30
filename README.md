@@ -146,12 +146,39 @@ Once configured, you can use the MCP server in Copilot Chat by:
   - `scopeValue` (string, 1-50 chars): Use the `value` field from `get_all_scopes` response
 - **Returns**: Success confirmation
 
+### `duda_strings_admin_create_bulk_string_keys`
+- **Purpose**: Creates multiple translation strings at once in the same scope
+- **Use Case**: Efficient for creating many related strings (e.g., all button labels, all error messages)
+- **Workflow**: 
+  1. First call `get_all_scopes` to see available scope options
+  2. Choose appropriate scope from the results
+  3. Create multiple string keys using the scope `value` field as `scopeValue`
+- **Parameters**:
+  - `keys` (array, min 1 item): Array of key-value pairs to create
+    - Each item contains:
+      - `key` (string): String identifier with required format:
+        - **Must start with `ui.ed.` prefix**
+        - **Format**: `ui.ed.{category}.{specific_name}`
+        - **Examples**: `ui.ed.button.save`, `ui.ed.error.invalid_email`
+      - `value` (string): The actual display text for this key
+    - **All keys must be unique within the request**
+  - `shouldTranslate` (boolean, default: true): Whether all these strings need translation
+  - `scopeValue` (string): Use the `value` field from `get_all_scopes` response
+- **Returns**: 
+  - **Full success**: List of all created keys
+  - **Partial success**: List of successful and failed keys with detailed error messages
+  - **Complete failure**: Error details for all failed keys
+- **Validation**: Checks for duplicate keys, invalid key formats, and validates each key before creation
+
 ## Usage Examples
 
 Ask Claude:
 - "Show me all string scopes"
 - "Create string key 'ui.ed.button.submit' with value 'Submit Form' in 'checkout' scope, translatable"
 - "List scopes then create a login error message"
+- "Create multiple button strings at once: save, cancel, submit, and delete in the 'editor' scope"
+- "Bulk create all error messages for form validation in one go"
+- "Create a set of navigation menu labels using the bulk tool"
 
 ## Troubleshooting
 
