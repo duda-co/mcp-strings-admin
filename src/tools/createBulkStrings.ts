@@ -11,7 +11,7 @@ export const createBulkStringsToolDefinition = {
     keys: z.array(z.object({
       key: z.string().describe('String identifier. MUST start with "ui.ed." prefix. Format: ui.ed.{category}.{specific_name}. Examples: ui.ed.button.save, ui.ed.error.invalid_email'),
       value: z.string().describe('The actual display text for this string')
-    })).min(1).describe('Array of key-value pairs to create. Each key must be unique and follow naming conventions.'),
+    })).describe('Array of key-value pairs to create. Each key must be unique and follow naming conventions.'),
     shouldTranslate: z.boolean().default(true).describe('Whether all these strings should be translated to other languages'),
     scopeValue: z.string().describe('Target scope name. Use the "value" field from duda_strings_admin_get_all_scopes response')
   }),

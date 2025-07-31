@@ -7,4 +7,8 @@ module.exports = {
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts"],
+  preset: "ts-jest",
+  transformIgnorePatterns: [
+    "node_modules/(?!(fastmcp|@modelcontextprotocol)/)",
+  ],
 };

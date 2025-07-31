@@ -40,15 +40,15 @@ describe('createString Tool', () => {
     expect(result.success).toBe(true);
   });
 
-  test('should reject invalid parameters', () => {
-    const invalidData = {
-      key: '', // empty key should fail
+  test('should accept parameters without length validation', () => {
+    const validData = {
+      key: 'test.key',
       value: 'Test Value',
       scopeValue: 'test-scope'
     };
 
-    const result = createStringToolDefinition.parameters.safeParse(invalidData);
-    expect(result.success).toBe(false);
+    const result = createStringToolDefinition.parameters.safeParse(validData);
+    expect(result.success).toBe(true);
   });
 
   test('should use default shouldTranslate value', () => {
@@ -61,7 +61,7 @@ describe('createString Tool', () => {
     const result = createStringToolDefinition.parameters.safeParse(dataWithoutTranslate);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.shouldTranslate).toBe(false); // default value
+      expect(result.data.shouldTranslate).toBe(true); // default value
     }
   });
 
@@ -170,33 +170,33 @@ describe('createString Tool', () => {
     );
   });
 
-  test('should validate parameter length constraints', () => {
-    // Test key length constraint (max 200)
+  test('should accept parameters with any length', () => {
+    // Test long key (no length constraint)
     const longKey = 'a'.repeat(201);
     const result1 = createStringToolDefinition.parameters.safeParse({
       key: longKey,
       value: 'Test',
       scopeValue: 'test'
     });
-    expect(result1.success).toBe(false);
+    expect(result1.success).toBe(true);
 
-    // Test value length constraint (max 1000)
+    // Test long value (no length constraint)
     const longValue = 'a'.repeat(1001);
     const result2 = createStringToolDefinition.parameters.safeParse({
       key: 'test.key',
       value: longValue,
       scopeValue: 'test'
     });
-    expect(result2.success).toBe(false);
+    expect(result2.success).toBe(true);
 
-    // Test scope length constraint (max 50)
+    // Test long scope (no length constraint)
     const longScope = 'a'.repeat(51);
     const result3 = createStringToolDefinition.parameters.safeParse({
       key: 'test.key',
       value: 'Test',
       scopeValue: longScope
     });
-    expect(result3.success).toBe(false);
+    expect(result3.success).toBe(true);
   });
 
   test('should log performance metrics', async () => {

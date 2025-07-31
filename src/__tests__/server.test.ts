@@ -1,8 +1,10 @@
-import { FastMCP } from 'fastmcp';
-
-// Mock FastMCP
-jest.mock('fastmcp');
-const MockedFastMCP = FastMCP as jest.MockedClass<typeof FastMCP>;
+// Mock FastMCP before importing
+jest.mock('fastmcp', () => ({
+  FastMCP: jest.fn().mockImplementation(() => ({
+    addTool: jest.fn(),
+    run: jest.fn(),
+  }))
+}));
 
 // Mock tools
 jest.mock('../tools/getScopes', () => ({
@@ -47,7 +49,8 @@ describe('Main Server', () => {
       start: jest.fn().mockResolvedValue(undefined)
     };
     
-    MockedFastMCP.mockImplementation(() => mockServerInstance);
+    const { FastMCP } = require('fastmcp');
+    FastMCP.mockImplementation(() => mockServerInstance);
   });
 
   afterEach(() => {
@@ -58,7 +61,8 @@ describe('Main Server', () => {
     // Import and run main function
     const mainModule = require('../index');
 
-    expect(MockedFastMCP).toHaveBeenCalledWith({
+    const { FastMCP } = require('fastmcp');
+    expect(FastMCP).toHaveBeenCalledWith({
       name: 'strings-admin-mcp',
       version: '0.1.0'
     });
@@ -73,7 +77,7 @@ describe('Main Server', () => {
 
     expect(mockServerInstance.addTool).toHaveBeenCalledWith(getScopesToolDefinition);
     expect(mockServerInstance.addTool).toHaveBeenCalledWith(createStringToolDefinition);
-    expect(mockServerInstance.addTool).toHaveBeenCalledTimes(2);
+    expect(mockServerInstance.addTool).toHaveBeenCalledTimes(3);
   });
 
   test('should start server with STDIO transport', async () => {
@@ -96,7 +100,7 @@ describe('Main Server', () => {
       'Starting strings-admin-mcp server',
       expect.objectContaining({
         version: '0.1.0',
-        stringsAdminHost: 'http://172.31.45.202',
+        stringsAdminHost: 'http://prd-ms-strings-admin-1.dudamobile.com',
         basePath: '/ms/strings-admin/internal/',
         logLevel: 'info',
         httpTimeout: 5000
@@ -115,7 +119,8 @@ describe('Main Server', () => {
       {
         tools: [
           'duda_strings_admin_get_all_scopes',
-          'duda_strings_admin_create_new_string_key'
+          'duda_strings_admin_create_new_string_key',
+          'duda_strings_admin_create_bulk_string_keys'
         ]
       }
     );

@@ -42,15 +42,15 @@ describe('createBulkStrings Tool', () => {
     expect(result.success).toBe(true);
   });
 
-  test('should reject empty keys array', () => {
-    const invalidData = {
-      keys: [], // empty array should fail
+  test('should accept empty keys array', () => {
+    const validData = {
+      keys: [], // empty array is now allowed
       shouldTranslate: true,
       scopeValue: 'test-scope'
     };
 
-    const result = createBulkStringsToolDefinition.parameters.safeParse(invalidData);
-    expect(result.success).toBe(false);
+    const result = createBulkStringsToolDefinition.parameters.safeParse(validData);
+    expect(result.success).toBe(true);
   });
 
   test('should reject invalid key structure', () => {

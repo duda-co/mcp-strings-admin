@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { httpClient } from '../utils/httpClient';
 
 // Mock axios
 jest.mock('axios');
@@ -17,15 +16,19 @@ describe('HTTP Client', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Mock axios.create before any imports that use it
     mockedAxios.create.mockReturnValue(mockAxiosInstance as any);
   });
 
   test('should create axios instance with correct configuration', () => {
+    // Setup mock before importing
+    mockedAxios.create.mockReturnValue(mockAxiosInstance as any);
+    
     // Import triggers the constructor
-    require('../utils/httpClient');
+    const { httpClient } = require('../utils/httpClient');
 
     expect(mockedAxios.create).toHaveBeenCalledWith({
-      baseURL: 'http://172.31.45.202',
+      baseURL: 'http://prd-ms-strings-admin-1.dudamobile.com',
       timeout: 5000,
       headers: {
         'Content-Type': 'application/json',
@@ -38,6 +41,7 @@ describe('HTTP Client', () => {
     const mockData = [{ value: 'checkout', shouldTranslate: true }];
     mockAxiosInstance.get.mockResolvedValue({ data: mockData });
 
+    const { httpClient } = require('../utils/httpClient');
     const result = await httpClient.get('/test-endpoint');
 
     expect(mockAxiosInstance.get).toHaveBeenCalledWith('/test-endpoint');
@@ -49,6 +53,7 @@ describe('HTTP Client', () => {
     const postData = { key: 'test.key', value: 'Test Value' };
     mockAxiosInstance.post.mockResolvedValue({ data: mockData });
 
+    const { httpClient } = require('../utils/httpClient');
     const result = await httpClient.post('/test-endpoint', postData);
 
     expect(mockAxiosInstance.post).toHaveBeenCalledWith('/test-endpoint', postData);
@@ -59,6 +64,7 @@ describe('HTTP Client', () => {
     const errorMessage = 'Network Error';
     mockAxiosInstance.get.mockRejectedValue(new Error(errorMessage));
 
+    const { httpClient } = require('../utils/httpClient');
     await expect(httpClient.get('/test-endpoint')).rejects.toThrow(errorMessage);
   });
 
@@ -66,10 +72,14 @@ describe('HTTP Client', () => {
     const errorMessage = 'Server Error';
     mockAxiosInstance.post.mockRejectedValue(new Error(errorMessage));
 
+    const { httpClient } = require('../utils/httpClient');
     await expect(httpClient.post('/test-endpoint', {})).rejects.toThrow(errorMessage);
   });
 
   test('should setup request and response interceptors', () => {
+    // Setup mock first
+    mockedAxios.create.mockReturnValue(mockAxiosInstance as any);
+    
     require('../utils/httpClient');
 
     expect(mockAxiosInstance.interceptors.request.use).toHaveBeenCalled();

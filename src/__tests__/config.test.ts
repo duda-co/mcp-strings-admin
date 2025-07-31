@@ -14,7 +14,7 @@ describe('Configuration', () => {
   });
 
   test('should have correct default values', () => {
-    expect(config.stringsAdminHost).toBe('http://172.31.45.202');
+    expect(config.stringsAdminHost).toBe('http://prd-ms-strings-admin-1.dudamobile.com');
     expect(config.basePath).toBe('/ms/strings-admin/internal/');
     expect(config.logLevel).toBe('info');
     expect(config.httpTimeout).toBe(5000);
